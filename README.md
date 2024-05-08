@@ -1,7 +1,7 @@
 # suspect_list_generator
 
 ## Overview
-This Python script is designed to extract and analyze indexing data from certain files. It performs various operations such as extracting indexing information, generating suspect term lists, and saving the results for further analysis. - These codes assume you have already downloaded the item XML files.
+This Python script is designed to extract and analyze indexing data from Inspec2 XML files. It performs various operations such as extracting indexing information, generating suspect term lists, and saving the results for further analysis. - These codes assume you have already downloaded the item XML files.
 
 ## Requirements
 - Python 3.x
