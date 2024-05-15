@@ -4,6 +4,8 @@ Created on Wed Apr  3 09:27:52 2024
 
 @author: SGeorgiou
 """
+
+              
 import numpy as np
 import json
 import os
@@ -12,7 +14,14 @@ import pandas as pd
 from tqdm import tqdm
 from dodgyextract_v2 import thes_class_extract
 from bypass_checker import bypass_checker
+import os
 
+# Specify the path where you want to create the folder
+def setup_directory(folder_path):
+
+    # Create the directory
+    os.makedirs(folder_path +"indexing_docs", exist_ok=True)
+    
 def get_prefix(indtype): #this is just for the file name prefix depending on the indexing type
     if indtype == "INSPEC Thesaurus":
         prefix = "CT_"
@@ -68,7 +77,63 @@ def ind_extract(path, indtype): #this uses the dodgyextract function to extract 
     
     return lines, term_dict
 
+def info():
+    notice = """
+    ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    This is the suspect_list_generator code @author: Stellios
+    See the README file here for further info on setup - https://github.com/sgeorgiou1/suspect_list_generator
+    
+    Use the main class suspect_terms_generator to initialise the indexing object
+    
+    Parameters
+    ----------
+    path : str
+        path to XML file folder (folder containing multiple Inspec2 XML files)
+    extract : bool
+        Boolean true or false to perform extraction of index terms. False by default. 
+        NOTE: FOR FIRST USE THIS SHOULD BE TRUE FOR THE REST OF THE CODE TO FUNCTION
+    
+    
+    After initialisation you can perform further functions or return outputs
+    
+    Outputs
+    -------
+    .ct_ind_stats - returns statistics for CT counts/precision (dict)
+    .cc_ind_stats - as above for CCs
+    
+    .ct_indexing - returns item level CT indexing information for each item in the dataset (pandas dataframe)
+    .cc_indexing - as above for CCs
+    
+    ct_ind_dict - returns item level CC indexing as a dictionary
+    cc_ind_dict - as above for CCs
+    
+    (after running generate_ct_list function): 
+    .ct_suspect_list - returns suspect ct list in current instance
+    .cc_suspect_list - as above for CCs
+    
+    Functions
+    ---------
+    .generate_ct_list(bypass_cutoff, max_precision, desired_bypass)
+        
+        Params
+        ------
+        bypass_cutoff : float between 0 and 1
+            number of terms within a paper that would trigger the send to human QA reason 
+        max_precision : optional, float between 0 and 1
+            use this option to specify the maximum precision value of terms to be used in the suspect list
+        desired_bypass : optional, float between 0 and 1
+            use this option to provide a desired bypass value, the code will loop through possible precision 
+            values to generate and test suspect lists and output the one closest to desired value
+        NOTE: both max_precision and desired_bypass are 0 by default, only one option can be used at a time
+        
+    .generate_cc_list(bypass_cutoff, max_precision, desired_bypass) - same as above for CCs
+    
+    .save_lists() - saves the suspect lists
 
+    type suspect_list_generator.info() to get this info again
+    ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    """
+    print (notice)
 def suspect_terms_generator(indtype, ind_df, ind_stats, bypass_cutoff, max_precision = 0, desired_bypass = 0):
 
     #first cut down dataframe to the relevant columns, we only need ID and CES indexing    
@@ -140,12 +205,15 @@ def suspect_terms_generator(indtype, ind_df, ind_stats, bypass_cutoff, max_preci
     
     
 class suspect_list_generator:
-    def __init__(self, path, extract = "n"): #initialise the object - decide whether or not you need to extract from the XML files, if running for the first time, always extract to ensure correct file setup
+    def __init__(self, path, extract=False): #initialise the object - decide whether or not you need to extract from the XML files, if running for the first time, always extract to ensure correct file setup
         self.path = path
         self.extract = extract
         self.ct_indtype = "INSPEC Thesaurus"
         self.cc_indtype = "INSPEC Classification"
-        if extract.lower() == "y": # run extract codes if extraction argument is triggered
+        
+        setup_directory(path) # sets up output directory
+        
+        if extract == True: # run extract codes if extraction argument is triggered
 
             
             ct_lines, self.ct_ind_stats = ind_extract(self.path, self.ct_indtype) 
