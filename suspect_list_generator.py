@@ -229,10 +229,10 @@ class suspect_list_generator:
         else: # if not then this imports the correct files assuming extraction has already been completed
 
             
-            with open(path + "indexing_docs/CT_stats.json") as f:
+            with open(path + "indexing_docs/CT_stats.json_dict") as f:
                 self.ct_ind_stats = json.load(f)
                 f.close()
-            with open(path + "indexing_docs/CC_stats.json") as f:
+            with open(path + "indexing_docs/CC_stats.json_dict") as f:
                 self.cc_ind_stats = json.load(f)
                 f.close()
                 
