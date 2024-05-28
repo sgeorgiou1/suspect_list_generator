@@ -13,10 +13,9 @@ This Python script is designed to extract and analyze indexing data from Inspec2
 
 ## Usage
 1. Clone or download this repository to your local machine. - save in the same directory where you have saved your XML files folder
-3. Ensure that all required packages are installed using `pip install numpy pandas tqdm`.
-4. Open and run `directory-setup.py` to setup correct output folders
-5. Import the `suspect_list_generator.py` script in your preferred Python editor or IDE.
-6. Run the script using Python. 
+2. Ensure that all required packages are installed using `pip install numpy pandas tqdm`.
+3. Import the `suspect_list_generator.py` script in your preferred Python editor or IDE.
+4. Run the script using Python. 
 ##### NOTE: Ensure `bypass_checker.py` and `dodgyextract_v2` are saved in the same directory as   `suspect_list_generator.py`
 ## Features
 - **Index Extraction:** Extracts indexing data from files using the `dodgyextract_v2` module.
